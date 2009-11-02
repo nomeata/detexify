@@ -17,7 +17,7 @@ function populateSymbolList(symbols) {
     if (symbol.fontenc) {
       info += '<code class="fontenc">\\usepackage['+symbol.fontenc+']{fontenc}</code><br>';
     }
-    info += '<code class="name">'+symbol.codepoint.toString(16)+': '+symbol.name+'</code>';
+    info += '<code class="name">U+'+symbol.codepoint.toString(16).toUpperCase()+': '+symbol.name+'</code>';
     if (symbol.samples != undefined) {
       info += '<br><span class="samples">Samples: <span class="number">'+symbol.samples+'</span></span><br>';
     }
