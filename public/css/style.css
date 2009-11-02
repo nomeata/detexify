@@ -280,6 +280,11 @@ ul.symbols li .info {
   padding: 1em 0 1em 1em;
 }
 
+ul.symbols li a {
+  text-decoration: none;
+  color: black;
+}
+
 ul.symbols li .symbol {
   display: table-cell;
   text-align: center;
