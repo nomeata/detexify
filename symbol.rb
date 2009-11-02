@@ -18,7 +18,7 @@ module Unicode
       args.each do |k,v|
         instance_variable_set "@#{k}", v if A.include? k
       end
-      @id = @codepoint.to_s.to_sym
+      @id = @codepoint.to_s(base=16).to_sym
     end
     
     def [](k)
