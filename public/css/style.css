@@ -334,7 +334,7 @@ ul.symbols li.active {
   margin: auto;
 }
 
-ul.symbols li .info .fontenc, ul.symbols li .info .package, ul.symbols li .info .texmode {
+ul.symbols li .info .fontenc, ul.symbols li .info .block, ul.symbols li .info .package, ul.symbols li .info .texmode {
   font-size: 1em;
 }
 
