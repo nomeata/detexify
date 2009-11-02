@@ -37,11 +37,11 @@ module Detexify
     end
 
     def symbols
-      @symbols ||= Latex::Symbol::List # FIXME do I need @symbols?  
+      @symbols ||= Unicode::Symbol::List # FIXME do I need @symbols?  
     end
 
     def symbol id
-      Latex::Symbol[id]
+      Unicode::Symbol[id]
     end
 
     attr_reader :sample_counts
@@ -61,7 +61,7 @@ module Detexify
 
     # train the classifier
     def train id, strokes
-      raise IllegalSymbolId unless Latex::Symbol[id]
+      raise IllegalSymbolId unless Unicode::Symbol[id]
       raise DataMessedUp unless data_ok?(strokes)
       #raise TooManySamples if count_samples(id) >= SAMPLE_LIMIT
       # TODO offload feature extraction to a job queue
@@ -98,7 +98,7 @@ module Detexify
       # we are adding everything that is not in the nearest list with LARGE distance
       missing = symbols.map { |symbol| symbol.id } - minimal_distance_hash.keys
       # FIXME this feels slow
-      ret = minimal_distance_hash.map { |id, dist| { :symbol => Latex::Symbol[id].to_hash, :score => dist } }.sort_by{ |h| h[:score] } + missing.map { |id| { :symbol => Latex::Symbol[id].to_hash, :score => 999999} }
+      ret = minimal_distance_hash.map { |id, dist| { :symbol => Unicode::Symbol[id].to_hash, :score => dist } }.sort_by{ |h| h[:score] } + missing.map { |id| { :symbol => Unicode::Symbol[id].to_hash, :score => 999999} }
       # limit and skip
       ret = ret[options[:skip] || 0, options[:limit] || ret.size] if [:limit, :skip].any? { |k| options[k] }
       return ret
