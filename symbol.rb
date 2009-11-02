@@ -62,8 +62,6 @@ module Unicode
 
     List = l
 
-    p List
-    
     def self.[](id)
       id = id.to_sym
       List.find { |symbol| symbol.id == id }
