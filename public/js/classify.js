@@ -22,7 +22,7 @@ $(function(){
         populateSymbolList(json.slice(0,5));
         $('#morearea').show();
         var setuptraining = function() {
-          $('#symbols li .symbol img')
+          $('#symbols li .symbol')
             .wrap('<a href="#"></a>')
             .tooltip({ tip: '#traintip' })
             .click(function(){

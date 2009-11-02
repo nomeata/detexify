@@ -47,7 +47,7 @@ $(function(){
       colorcode(this);
       });
     // setup training
-    $('#symbols li .symbol img')
+    $('#symbols li .symbol')
       .wrap('<a href="#"></a>')
       .tooltip({ tip: '#traintip' })
       .click(function(){
