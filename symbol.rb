@@ -1,24 +1,24 @@
-require 'yaml'
+require 'csv'
 
-module Latex
+module Unicode
 
   class Symbol
         
     #:nodoc:
-    A = [:command, :package, :fontenc, :mathmode, :textmode]
+    A = [:codepoint, :name, :block]
     
     attr_reader *A
     attr_reader :id
 
     def initialize args = {}
-      raise ArgumentError.new('You need at least a command for a LaTeX symbol.') unless args[:command]
+      raise ArgumentError.new('You need at least a codepoint for a Unicode symbol.') unless args[:codepoint]
       # defauls
-      args = { :textmode => true, :mathmode => false }.update(args)
+      args = { :bock => nil, :name => nil }.update(args)
       # init
       args.each do |k,v|
         instance_variable_set "@#{k}", v if A.include? k
       end
-      @id = "#{package || 'latex2e'}-#{fontenc || 'OT1'}-#{command.gsub('\\','_')}".to_sym
+      @id = @codepoint
     end
     
     def [](k)
@@ -30,7 +30,7 @@ module Latex
     # end
     
     def to_s
-      "#{command} (#{package || 'latex2e'}, #{fontenc || 'OT1'})"
+      "#{codepoint} (#{name})"
     end
     
     def to_hash
@@ -40,26 +40,29 @@ module Latex
       h
     end
     
-    symbols = File.open( File.join(File.expand_path(File.dirname(__FILE__)),'symbols.yaml') ) { |f| YAML::load( f ) }
+    # This needs to be extendable and queryable somewhere
+    blocks = [ [0x2200, 0x22FF, "Mathematical Operators"],
+               [0x2300, 0x23FF, "Miscellaneous Technical"],
+	     ]
 
-    List = symbols.map do |s|
-      case s
-      when String
-        new(:command => s)
-      when Hash
-        { 
-          'textmode' => { :textmode => true, :mathmode => false},
-          'mathmode' => { :textmode => false, :mathmode => true},
-          'bothmodes' => { :textmode => true, :mathmode => true}
-        }.map do |mode, modeargs|
-          if s[mode]
-            s[mode].map do |t|
-              new({:command => t, :package => s['package'], :fontenc => s['fontenc']}.merge!(modeargs))
-            end
-          end   
-        end.compact # remove nil elements    
+    symbols = CSV.open( File.join(File.expand_path(File.dirname(__FILE__)),'UnicodeData.txt'), 'r', col_sep=';')
+
+    l = []
+    
+    symbols.each do |r|
+      codepoint = r[0].to_i(16)
+      name = r[1]
+      blocks.map do |range|
+        if range[0] <= codepoint and codepoint <= range[1]
+	then
+	  l +=  [new({:codepoint => codepoint, :name => r[1], :block => range[2]})]
+	end
       end
-    end.flatten    
+    end
+
+    List = l
+
+    p List
     
     def self.[](id)
       id = id.to_sym
