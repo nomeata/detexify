@@ -6,7 +6,7 @@ describe Detexify::Classifier do
 
   before do
     @db = CouchRest.database! TESTCOUCH
-    @symbol = Latex::Symbol::List.first
+    @symbol = Unicode::Symbol::List.first
     @strokes = [[{'x'=>0, 'y'=>0}, {'x'=>1, 'y'=>1}]]
     @samples = Detexify::Sample.on(@db)
     # put 10 samples in db
@@ -34,7 +34,7 @@ describe Detexify::Classifier do
 
   it "should classify a new sample" do
     res = @classifier.classify(@strokes)
-    res.should have(Latex::Symbol::List.size).elements
+    res.should have(Unicode::Symbol::List.size).elements
 
     # verify structure of response
     res.should be_an(Array)

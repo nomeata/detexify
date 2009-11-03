@@ -16,7 +16,7 @@ describe 'The Sinatra classifier' do
   include Rack::Test::Methods
 
   before do
-    @symbol = Latex::Symbol::List.first
+    @symbol = Unicode::Symbol::List.first
     @strokes = [[{'x'=>0, 'y'=>0}, {'x'=>1, 'y'=>1}]]
     CLASSIFIER.stub!(:train)
   end
@@ -65,7 +65,7 @@ describe 'The Sinatra classifier' do
     r.should be_a(Array)
     r.each do |element|
       element.should be_a(Hash)
-      %w(id command mathmode textmode samples).each do |key|
+      %w(id codepoint block name).each do |key|
         element.should have_key key        
       end
     end

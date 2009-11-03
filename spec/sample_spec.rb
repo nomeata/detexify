@@ -5,7 +5,7 @@ require 'sample'
 describe Detexify::Sample do
   before do
     @db = CouchRest.database! TESTCOUCH
-    @symbol = Latex::Symbol::List.first
+    @symbol = Unicode::Symbol::List.first
     @strokes = [[{'x'=>1,'y'=>1}]]
   end
   
@@ -22,7 +22,7 @@ end
 describe Detexify::MiniSampleContainer do
   
   before(:each) do
-    @symbol = Latex::Symbol::List.first
+    @symbol = Unicode::Symbol::List.first
     @strokes = [[{'x'=>1,'y'=>1}]]
     @sample = Detexify::Sample.new :strokes => @strokes, :feature_vector => [1], :symbol_id => @symbol.id
     @othersample = Detexify::Sample.new :strokes => @strokes, :feature_vector => [2], :symbol_id => @symbol.id
