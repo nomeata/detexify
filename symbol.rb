@@ -41,8 +41,8 @@ module Unicode
     end
     
     # This needs to be extendable and queryable somewhere
-    blocks = [ [0x2200, 0x22FF, "Mathematical Operators"],
-               [0x2300, 0x23FF, "Miscellaneous Technical"],
+    blocks = [ { :from=> 0x2200, :to => 0x22FF, :name => "Mathematical Operators" },
+               { :from=> 0x2300, :to => 0x23FF, :name => "Miscellaneous Technical" },
 	     ]
 
     symbols = CSV.open( File.join(File.expand_path(File.dirname(__FILE__)),'UnicodeData.txt'), 'r', col_sep=';')
@@ -53,9 +53,9 @@ module Unicode
       codepoint = r[0].to_i(16)
       name = r[1]
       blocks.map do |range|
-        if range[0] <= codepoint and codepoint <= range[1]
+        if range[:from] <= codepoint and codepoint <= range[:to]
 	then
-	  l +=  [new({:codepoint => codepoint, :name => r[1], :block => range[2]})]
+	  l +=  [new({:codepoint => codepoint, :name => r[1], :block => range[:name]})]
 	end
       end
     end
