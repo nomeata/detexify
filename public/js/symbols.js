@@ -11,12 +11,14 @@ $(function(){
   var filter = '';
   
   var localesort = function(a,b){ return (''+a).localeCompare(''+b); }
-  var alphasort = function(a,b){ return localesort(a.command, b.command); }
-  var packagesort = function(a,b){
-    if (a.package === b.package) {
-      return alphasort(a, b);
+  var codepointsort = function(a,b){ if (b.codepointsort < a.codepointsort) return -1;
+                                     if (b.codepointsort > a.codepointsort) return  1;
+				     return 0; }
+  var namesort = function(a,b){
+    if (a.name === b.name) {
+      return codepointsort(a, b);
     } else {
-      return localesort(a.package, b.package);
+      return localesort(a.name, b.name);
     }
   }
   var samplesort = function(a,b){ return (a.samples - b.samples); }
@@ -31,10 +33,10 @@ $(function(){
   }
   
   var filtered = function(symbols) {
-    // only show dem with package or command matching filter
+    // only show dem with name or codepoint matching filter
     if (filter === '') return symbols;
     return $.grep(symbols, function(symbol, index){
-      return (symbol.package && symbol.package.match(filter)) || symbol.command.match(filter)
+      return (symbol.name && symbol.name.toUpperCase().match(filter.toUpperCase())) || symbol.codepoint.toString(16).toUpperCase().match(filter.toUpperCase())
     });
   }
   
@@ -76,7 +78,7 @@ $(function(){
   }
   
   $.getJSON("/symbols", function(json) {
-    json.sort(alphasort)
+    json.sort(codepointsort)
     symbols = json;
     populateSymbolListWrapper(symbols);
     $('#spinner').hide();
@@ -90,14 +92,14 @@ $(function(){
     
   $('#sort').change(function(){
     switch ($(this).val()) {
-      case 'alpha':
-        symbols.sort(alphasort)
+      case 'codepoint':
+        symbols.sort(codepointsort)
       break;
       case 'samples':
         symbols.sort(samplesort)
       break;
-      case 'package':
-        symbols.sort(packagesort)
+      case 'name':
+        symbols.sort(namesort)
       break;
     }
     populateSymbolListWrapper(symbols);
