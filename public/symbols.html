@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Detexify LaTeX symbol table</title>
+    <title>Deunicodeify unicode symbol table</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="List of supported LaTeX symbols to be trained and recognized by Detexify">
-    <meta name="keywords" content="math,LaTeX,productivity,typesetting,science,machine learning,PhD">
+    <meta name="description" content="List of supported unicode symbols to be trained and recognized by Deunicodeify">
+    <meta name="keywords" content="math,unicode,productivity,typesetting,science,machine learning,PhD">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.gritter.css" />
     <script type='text/javascript' src="js/jquery-1.3.2.min.js"></script>
@@ -19,12 +19,14 @@
   <body class='symbols'>
     <div id="everything">
       <div id="status"></div>
-      <h1>Detexify<sup>2</sup> - Symbol table</h1>
+      <h1>Deunicodeify<sup>2</sup> - Symbol table</h1>
       
       <ul class="nav">
         <li class="classify"><a href="/classify.html">classify</a></li>
         <li class="symbols"><a href="/symbols.html">symbols</a></li>
+	<!--
         <li class="blog"><a href="http://detexifyblog.kirelabs.org" target="_blank">blog</a></li>
+	-->
       </ul>    
           
       <div id="infoarea">
@@ -38,7 +40,7 @@
            Or just train symbols you sometimes need but tend to forget.
         </p>
         <p>   
-          If there are symbols missing be sure to drop me a line (danishkirel@gmail.com).
+          If there are symbols missing be sure to drop me a line (mail@joachim-breitner.de).
         </p>
       </div>
       <div id='controls'>
@@ -53,21 +55,21 @@
       <input type='text' id='filter'>
       </div>
       <span id="spinner" class="spinner">
-        <img alt="Loading..." src="http://detexify-web.kirelabs.org.s3.amazonaws.com/images/spinner.gif">
+        <img alt="Loading..." src="images/spinner.gif">
       </span>
       <ul id="symbols" class="symbols">
       </ul>
       <a id='up' href='#'>up &#x2191;</a>
       <div id='safespot' style='display:none;'>
       <div id="trainingarea">
-        <img alt="Draw below and then click 'train'!" id="drawhere" src="http://detexify-web.kirelabs.org.s3.amazonaws.com/images/draw_here_then_train.png">
+        <img alt="Draw below and then click 'train'!" id="drawhere" src="images/draw_here_then_train.png">
         <div id="canvascontainer">
         <canvas id="tafel" width="400" height="400">
           Your browser must support the &lt;canvas&gt; element in order
           to use this site.
         </canvas>
         <div id="canvasspinner" class="spinner">
-          <img alt='Loading...' src='http://detexify-web.kirelabs.org.s3.amazonaws.com/images/spinner.gif'>
+          <img alt='Loading...' src='images/spinner.gif'>
         </div>
         </div>
         <div id="canvascontrols">
