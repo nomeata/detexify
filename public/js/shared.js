@@ -11,27 +11,18 @@ function populateSymbolList(symbols) {
     if (this.score) {
       info += '<span class="score">Score: '+this.score+'</span><br>';
     }
-    if (symbol.package) {
-      info += '<code class="package">\\usepackage{'+symbol.package+'}</code><br>';
+    if (symbol.block) {
+      info += '<code class="block">Block "'+symbol.block+'"</code><br>';
     }
     if (symbol.fontenc) {
       info += '<code class="fontenc">\\usepackage['+symbol.fontenc+']{fontenc}</code><br>';
     }
-    info += '<code class="command">'+symbol.command+'</code>';
-    if (symbol.textmode && !symbol.mathmode) {
-      info += '<br><span class="texmode">textmode</span>';
-    }
-    else if (symbol.mathmode && !symbol.textmode) {
-      info += '<br><span class="texmode">mathmode</span>';
-    }
-    else if (symbol.textmode && symbol.mathmode) {
-      info += '<br><span class="texmode">textmode & mathmode</span>';
-    }
+    info += '<code class="name">'+symbol.codepoint.toString(16)+': '+symbol.name+'</code>';
     if (symbol.samples != undefined) {
       info += '<br><span class="samples">Samples: <span class="number">'+symbol.samples+'</span></span><br>';
     }
     $('#symbols').append(
-      '<li id="'+symbol.id+'"><div class="symbolsentry"><div class="symbol"><img src="'+symbol.uri+'"></div>'+
+      '<li id="'+symbol.id+'"><div class="symbolsentry"><div class="symbol"><!-- <img alt="symbol:'+symbol.id+'">-->&#'+symbol.codepoint+';</div>'+
       '<div class="info">'+info+'</div></div></li>'
       );
   });
