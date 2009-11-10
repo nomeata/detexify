@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Detexify LaTeX handwritten symbol recognition</title>
+    <title>Deunicodeify unicode handwritten symbol recognition</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="An approach to simplify finding LaTeX symbols.">
-    <meta name="keywords" content="math,LaTeX,productivity,typesetting,science,machine learning,PhD">
+    <meta name="description" content="An approach to simplify finding unicode symbols.">
+    <meta name="keywords" content="math,unicode,productivity,typesetting,science,machine learning,PhD">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.gritter.css" />
     <script type='text/javascript' src="js/jquery-1.3.2.min.js"></script>
@@ -19,23 +19,23 @@
   <body class="classify">
     <div id="everything">
       <div id="status"></div>
-      <h1>Detexify<sup>2</sup> - LaTeX symbol classifier</h1>
+      <h1>Deunicodeify - unicode symbol classifier</h1>
       
       <ul class="nav">
         <li class="classify"><a href="/classify.html">classify</a></li>
         <li class="symbols"><a href="/symbols.html">symbols</a></li>
-        <li class="blog"><a href="http://detexifyblog.kirelabs.org" target="_blank">blog</a></li>
+        <!-- <li class="blog"><a href="http://detexifyblog.kirelabs.org" target="_blank">blog</a></li> -->
       </ul>    
       
       <div id="canvasarea">
-        <img id="drawhere" alt="Draw here!" src="http://detexify-web.kirelabs.org.s3.amazonaws.com/images/draw_here.png">
+        <img id="drawhere" alt="Draw here!" src="images/draw_here.png">
         <div id="canvascontainer">
         <canvas id="tafel" width="400" height="400">
           Your browser must support the &lt;canvas&gt; element in order
           to use this site.
         </canvas>
         <div id="canvasspinner" class="spinner">
-          <img alt='Loading...' src='http://detexify-web.kirelabs.org.s3.amazonaws.com/images/spinner.gif'>
+          <img alt='Loading...' src='images/spinner.gif'>
         </div>
         </div>
         <div id="canvascontrols">
@@ -46,11 +46,12 @@
 
       <div id="infoarea">
         <h2>What is this?</h2>
-        <p>
-          Anyone who works with LaTeX knows how time-consuming it can be
-          to find a symbol in
-          <a href="http://www.ctan.org/tex-archive/info/symbols/comprehensive/">symbols-a4.pdf</a>
-          that you just can't memorize. Detexify is an attempt to simplify this search.
+	<p>
+	  There are plenty of interesting symbols in the unicode
+	  specification to beef up chats or what else. But they have
+	  to be found first, and the keyboard is just too small. There
+	  are lists, of course, but they are hard to search.
+	  Deunicodeify is an attempt to simplify this search.
         </p>
         <h2>How does it work?</h2>
         <p>
@@ -61,32 +62,39 @@
           The symbol may not be trained enough
           or it is not yet in the list of supported symbols.
           In the first case you can do the training yourself.
-          In the second case just drop me a line (danishkirel@gmail.com)!
+          In the second case just drop me a line
+	  (mail@joachim-breitner.de)!
         </p>
         <h2>I like this. How can I help?</h2>
         <p>
-          You could spare some time training Detexify. You could also
-          look at the source on <a href="http://github.com/kirel/detexify">GitHub</a>
+          You could spare some time training Deunicodeify. You could also
+          look at the source on <a href="http://github.com/nomeata/detexify">GitHub</a>
           and if you want to contribute you're welcome. If you really, really like this
-          you can also donate.
+          you can also donate to the original author.
         </p>
-        <a href='http://www.pledgie.com/campaigns/5866'><img alt='Click here to lend your support to: Detexify LaTeX symbol recognition and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/5866.png?skin_name=chrome' border='0' /></a>
+        <a href='http://www.pledgie.com/campaigns/5866'><img
+	alt='Click here to lend your support to: Detexify unicode symbol recognition and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/5866.png?skin_name=chrome' border='0' /></a>
         <h2>This doesn't work at all!?</h2>
         <p>
-          Detexify relies on HTML5 features so you need a fairly recent browser.
+          Deunicodeify relies on HTML5 features so you need a fairly recent browser.
           Opera 9.6 / Firefox 3.5 / Safari 4 should do the trick.
         </p>
-        <h2>Who created Detexify?</h2>
+        <h2>Who created Deunicodeify?</h2>
         <p>
-          Philipp Kühl had the initial idea and
-          <a href='http://kirelabs.org'>Daniel Kirsch</a> made it happen.
+          Philipp Kühl had the initial idea and <a
+	  href='http://kirelabs.org'>Daniel Kirsch</a> created
+	  <a href="http://detexify.kirelabs.org/classify.html">Detexify</a>,
+	  where you can classify LaTeX characters. <a
+	  href="http://www.joachim-breitner.de">Joachim Breitner</a> modified
+	  the interface to search unicode characters, but this is just a minor
+	  modification of Daniel’s Detexify, so all the praise belongs to him.
         </p>
       </div>
       
       <div id="hitarea">
         <div id="donate">
           <em>Did this help?</em> <span>Hosting Detexify costs money and if it helps you may consider helping to pay the hosting bill.</span>
-          <a href='http://www.pledgie.com/campaigns/5866'><img alt='Click here to lend your support to: Detexify LaTeX symbol recognition and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/5866.png?skin_name=chrome' border='0' /></a>
+          <a href='http://www.pledgie.com/campaigns/5866'><img alt='Click here to lend your support to: Deunicodeify unicode symbol recognition and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/5866.png?skin_name=chrome' border='0' /></a>
         </div>
         <ul id="symbols" class="symbols">
         </ul>
