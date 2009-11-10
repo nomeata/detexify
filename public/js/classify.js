@@ -26,10 +26,11 @@ $(function(){
             .wrap('<a href="#"></a>')
             .tooltip({ tip: '#traintip' })
             .click(function(){
+              id = $(this).parents().filter('li').get(0).id;
               $.gritter.add({title:'Thanks!', text:'Thank you for training!', time: 1000})
               $(this).tooltip(0).hide();
               $('#canvasspinner').show('scale');            
-              train($(this).closest('li').attr('id'), canvas, function(json){
+              train(id, canvas, function(json){
                 // TODO DRY
                 $('#canvasspinner').hide('scale');
                 if (json.message) {
