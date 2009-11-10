@@ -1,18 +1,14 @@
 require 'spec/rake/spectask'
+require 'symbol_task'
+require 'populate_task'
 
 task :default => [:spec]
 
 Spec::Rake::SpecTask.new do |t|
   t.warning = true
-  t.rcov = true
+  #t.rcov = false
 end
 
-namespace :features do
+SymbolTask.new
 
-  desc "regenerate all feature vectors"
-  task :regenerate do
-    require 'app'
-    CLASSIFIER.regenerate_features
-  end
-
-end
+PopulateTask.new

@@ -1,11 +1,12 @@
 require 'csv'
+require 'digest'
 
 module Unicode
 
   class Symbol
         
     #:nodoc:
-    A = [:codepoint, :name, :block]
+    A = [:codepoint, :name, :block ]
     
     attr_reader *A
     attr_reader :id
@@ -31,6 +32,11 @@ module Unicode
     
     def to_s
       "#{codepoint} (#{name})"
+    end
+    
+    def filename
+      # id.to_s
+      Digest::MD5.hexdigest id.to_s
     end
     
     def to_hash

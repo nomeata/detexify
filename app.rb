@@ -1,23 +1,32 @@
 require 'json'
 require 'sinatra'
-require 'classifier.rb' 
+require 'restclient'
+require 'symbol'
+require 'base64'
+require 'couch'
 
-COUCH = ENV['COUCH'] || "http://127.0.0.1:5984/detexify"
-CLASSIFIER = Detexify::Classifier.new(COUCH, Detexify::Extractors::Strokes::Features.new)
+classifier = (ENV['CLASSIFIER'] || 'http://localhost:3000').sub(/\/?$/,'')
+if ENV['COUCH'] == 'none'
+  couch = Class.new { def << fake; end }.new
+  STDERR.puts 'WARNING! Running without a couch.'
+else
+  couch = Couch.new((ENV['COUCH'] || 'http://localhost:5984/detexify').sub(/\/?$/,'/'))
+  couch.create!
+end
 
-get '/status' do
-  JSON :loaded => CLASSIFIER.loaded?, :progress => CLASSIFIER.progress
+sample_counts = Hash.new { |h,k| h[k] = 0 } # TODO sample counts
+JSON(RestClient.get(classifier))['counts'].each do |id,c|
+  sample_counts[Base64.decode64(id).to_sym] += c
 end
 
 get '/symbols' do
-  symbols = CLASSIFIER.symbols.map { |s| s.to_hash }
+  symbols = Latex::Symbol::List.map { |s| s.to_hash }
   # update with counts
-  sample_counts = CLASSIFIER.sample_counts
-  JSON symbols.map { |symbol| symbol.update(:samples => sample_counts[symbol[:id]]) }
+  JSON Latex::Symbol::List.map { |s| s.to_hash.update :samples => sample_counts[s.id.to_sym] }
 end
 
 post '/train' do
-  halt 403, "Illegal id" unless params[:id] && CLASSIFIER.symbol(params[:id])
+  halt 403, "Illegal id" unless params[:id] && Latex::Symbol[params[:id].to_sym]
   halt 403, 'I want some payload' unless params[:strokes]
   begin
     strokes = JSON params[:strokes]
@@ -25,26 +34,36 @@ post '/train' do
     halt 403, "Strokes scrambled"
   end
   if strokes && !strokes.empty? && !strokes.first.empty?
-    begin
-      CLASSIFIER.train params[:id], strokes
-    rescue Detexify::Classifier::TooManySamples
-      # FIXME can I handle http status codes in the request? Wanna go restful
-      #halt 403, "Thanks - i've got enough of these..."
-      halt 200, JSON(:error => "Thanks but I've got enough of these...")
-    end
+    rsp = RestClient.post classifier + "/train/#{Base64.encode64(params[:id])}", params[:strokes]
+    couch << {'id' => params[:id], 'data' => strokes }
+    sample_counts[params[:id].to_sym] += 1
+    halt 200, rsp
   else
     halt 403, "These strokes look suspicious"
   end
-  # TODO sanity check in command list
-  halt 200, JSON(:message => "Symbol was successfully trained.")
-  # TODO return new list of symbols and counts
 end
 
 # classifies a set of strokes
 # post param 'strokes' must be [['x':int x, 'y':int y, 't':int time], [...]]
 post '/classify' do
   halt 401, 'I want some payload' unless params[:strokes]
-  strokes = JSON params[:strokes]
-  hits = CLASSIFIER.classify strokes, { :skip => params[:skip] && params[:skip].to_i, :limit => params[:limit] && params[:limit].to_i }
+  # strokes = JSON params[:strokes]
+  rsp = RestClient.post classifier + "/classify", params[:strokes]
+  hits = JSON rsp
+  #, { :skip => params[:skip] && params[:skip].to_i, :limit => params[:limit] && params[:limit].to_i }
+  nohits = Latex::Symbol::List - hits.map { |hit| Latex::Symbol[Base64.decode64(hit['id'])] }
+  hits = hits.map { |hit| { :symbol => Latex::Symbol[Base64.decode64(hit['id'])].to_hash, :score => hit['score']} } + nohits.map { |symbol| { :symbol => symbol.to_hash, :score => 99999 } }
   JSON hits
+end
+
+# GUI
+
+%w(/en/classify /de/classify).each do |path|
+  get path do
+    redirect '/classify.html'    
+  end
+end
+
+get '/' do
+  redirect '/classify.html'
 end

@@ -1,5 +1,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper'))
 
+require 'erb'
+require 'symbol'
+
 describe Unicode::Symbol do
   
   before do
@@ -28,6 +31,7 @@ end
 
 describe 'Unicode::Symbol::List' do
 
+  TEMPLATE = ERB.new open(File.join(File.dirname(__FILE__), '..', 'template.tex.erb')).read
   it "should have all different ids" do
     ids = Unicode::Symbol::List.map { |symbol| symbol.id }
     ids.size.should == ids.uniq.size
