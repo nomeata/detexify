@@ -20,13 +20,13 @@ JSON(RestClient.get(classifier))['counts'].each do |id,c|
 end
 
 get '/symbols' do
-  symbols = Latex::Symbol::List.map { |s| s.to_hash }
+  symbols = Unicode::Symbol::List.map { |s| s.to_hash }
   # update with counts
-  JSON Latex::Symbol::List.map { |s| s.to_hash.update :samples => sample_counts[s.id.to_sym] }
+  JSON Unicode::Symbol::List.map { |s| s.to_hash.update :samples => sample_counts[s.id.to_sym] }
 end
 
 post '/train' do
-  halt 403, "Illegal id" unless params[:id] && Latex::Symbol[params[:id].to_sym]
+  halt 403, "Illegal id" unless params[:id] && Unicode::Symbol[params[:id].to_sym]
   halt 403, 'I want some payload' unless params[:strokes]
   begin
     strokes = JSON params[:strokes]
@@ -51,8 +51,8 @@ post '/classify' do
   rsp = RestClient.post classifier + "/classify", params[:strokes]
   hits = JSON rsp
   #, { :skip => params[:skip] && params[:skip].to_i, :limit => params[:limit] && params[:limit].to_i }
-  nohits = Latex::Symbol::List - hits.map { |hit| Latex::Symbol[Base64.decode64(hit['id'])] }
-  hits = hits.map { |hit| { :symbol => Latex::Symbol[Base64.decode64(hit['id'])].to_hash, :score => hit['score']} } + nohits.map { |symbol| { :symbol => symbol.to_hash, :score => 99999 } }
+  nohits = Unicode::Symbol::List - hits.map { |hit| Unicode::Symbol[Base64.decode64(hit['id'])] }
+  hits = hits.map { |hit| { :symbol => Unicode::Symbol[Base64.decode64(hit['id'])].to_hash, :score => hit['score']} } + nohits.map { |symbol| { :symbol => symbol.to_hash, :score => 99999 } }
   JSON hits
 end
 
